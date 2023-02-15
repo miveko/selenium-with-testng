@@ -1,0 +1,19 @@
+CREATE TABLE testcase_result (
+	execution_guid TEXT,
+	testcase_name TEXT,
+	testcase_description TEXT,
+	status TEXT,
+	message TEXT,
+	timestamp TEXT,
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+);
+
+
+CREATE TABLE select_country_testcase_dataset (
+	testcase_name TEXT,
+	testcase_description TEXT,
+	testcase_type TEXT,
+	active INTEGER,
+	country TEXT,
+	currency TEXT
+);
