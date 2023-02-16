@@ -51,10 +51,10 @@ public class CurrencyConversionCalculatorTests extends BaseTest {
             testcase = new Testcase("sellAmountClearedWhenBuyAmountFilled");
             testcase.setTestcaseDescription("Verify the sell amount input box is cleared " +
                     "when an amount is entered in the buy amount input box");
-            if(input_sellAmount().getText().length() == 0)
+            if(input_sellAmount().getAttribute("value").length() == 0)
                 page.fillSellAmount();
             page.fillBuyAmount();
-            Assert.assertEquals(input_sellAmount().getText().length(), 0);
+            Assert.assertEquals(input_sellAmount().getAttribute("value").length(), 0);
         } catch (Exception e) {
             msg = e.toString();
         } finally {
@@ -67,16 +67,14 @@ public class CurrencyConversionCalculatorTests extends BaseTest {
             testcase = new Testcase("buyAmountClearedWhenSellAmountFilled");
             testcase.setTestcaseDescription("Verify the buy amount input box is cleared " +
                     "when an amount is entered in the sell amount input box");
-            if(input_buyAmount().getText().length() == 0)
+            if(input_buyAmount().getAttribute("value").length() == 0)
                 page.fillBuyAmount();
             page.fillSellAmount();
-            Assert.assertEquals(input_buyAmount().getText().length(), 0);
+            Assert.assertEquals(input_buyAmount().getAttribute("value").length(), 0);
         } catch (Exception e) {
-            testcase.setStatus(FAILED);
-            testcase.setMessage(e.toString());
+           msg = e.toString();
         } finally {
-            testcase.setStatus(PASSED);
-            testcase.setMessage("OK");
+            pTcUtil.processTestcase(testcase, msg);
         }
     }
 

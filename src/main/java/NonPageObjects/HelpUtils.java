@@ -27,9 +27,8 @@ public class HelpUtils extends BaseTest {
 
 
     public List<HashMap<String, Object>> getSqlData(String query) {
-        String url = automationDbConnString;
         List<HashMap<String, Object>> rows = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(url)) {
+        try (Connection conn = DriverManager.getConnection(automationDbConnString)) {
             // create a connection to the database
             System.out.println("Connection to SQLite has been established.");
             Statement stmt  = conn.createStatement();
@@ -53,9 +52,8 @@ public class HelpUtils extends BaseTest {
     }
 
     public void saveTestcaseResult(Testcase tc) {
-        String url = automationDbConnString;
         String timestamp = new Timestamp(System.currentTimeMillis()).toString();
-        try (Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(automationDbConnString);
              PreparedStatement pstmt = conn.prepareStatement(SAVE_TESTCASE_RESULT_QUERY)) {
             pstmt.setString(1, tc.getExecutionGuid());
             pstmt.setString(2, tc.getTestcaseName());
@@ -65,7 +63,7 @@ public class HelpUtils extends BaseTest {
             pstmt.setString(6, timestamp);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 }
