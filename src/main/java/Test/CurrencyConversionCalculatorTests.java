@@ -1,6 +1,6 @@
 package Test;
 import base.objects.BaseTest;
-import NonPageObjects.ProcessTestcaseUtil;
+import NonPageObjects.HelpUtils;
 import NonPageObjects.SelectCountryTestcase;
 import base.objects.Testcase;
 import Pages.CurrencyConversionCalculatorPage;
@@ -18,7 +18,7 @@ import static PageElements.CurrencyConversionCalculatorElements.*;
 
 public class CurrencyConversionCalculatorTests extends BaseTest {
     private WebDriver driver;
-    private ProcessTestcaseUtil pTcUtil;
+    private HelpUtils pTcUtil;
     private Testcase testcase;
     private String msg;
     CurrencyConversionCalculatorPage page;
@@ -26,14 +26,14 @@ public class CurrencyConversionCalculatorTests extends BaseTest {
     @BeforeClass
     public void beforeClass() {
         driver = new ChromeDriver();
-        pTcUtil = new ProcessTestcaseUtil();
+        pTcUtil = new HelpUtils();
         page = new CurrencyConversionCalculatorPage(driver);
         page.loadPage();
     }
 
     @DataProvider(name = "SelectCountryTestcases")
     public Object[][] dpMethod(){
-        String sqlQuery = "SELECT x.* FROM select_country_testcase_dataset x;";
+        String sqlQuery = GET_TESTCASES_QUERY.replace("@TestcaseGroup@", "select_country");
         List<HashMap<String, Object>> resultSet = pTcUtil.getSqlData(sqlQuery);
 
         return SelectCountryTestcase.map(resultSet);
@@ -97,9 +97,10 @@ public class CurrencyConversionCalculatorTests extends BaseTest {
             msg = "OK";
             testcase = new Testcase(tc.getTestcaseName());
             testcase.setTestcaseDescription(tc.getTestcaseDescription());
-            //select
-            String currency = "";
+            page.selectCountry(tc.getCountry());
+            String currency = _span_currencySelected().getText();
             Assert.assertEquals(currency, tc.getCurrency());
+            //TODO check rates changed
         } catch (Exception e) {
             msg = e.toString();
         } finally {

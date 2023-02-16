@@ -30,4 +30,19 @@ public class CurrencyConversionCalculatorElements {
 //        return driver.findElement(By.cssSelector(".ng-pristine:nth-child(2)']"));
     }
 
+    public static WebElement _span_carret() {
+        return driver.findElement(By.cssSelector(".dropup"));
+    }
+
+    public static WebElement _dropdown_countries() {
+        return driver.findElement(By.xpath("//button[@id='countries-dropdown']/span[2]"));
+    }
+
+    public static WebElement _link_country(String country) {
+        return driver.findElement(By.linkText(country));
+    }
+
+    public static WebElement _span_currencySelected() {
+        return driver.findElement(By.cssSelector("span[data-ng-bind='$select.selected'][class='ng-binding ng-scope']"));
+    }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 import static NonPageObjects.Constants.*;
 
-public class ProcessTestcaseUtil extends BaseTest {
+public class HelpUtils extends BaseTest {
     public void processTestcase(Testcase tc, String msg) {
         if(msg.equals(OK)) {
             tc.setStatus(PASSED);
@@ -22,7 +22,7 @@ public class ProcessTestcaseUtil extends BaseTest {
         }
 
         tc.setMessage(msg);
-        //TODO save tc to database
+        saveTestcaseResult(tc);
     }
 
 
@@ -50,5 +50,22 @@ public class ProcessTestcaseUtil extends BaseTest {
         }
 
         return rows;
+    }
+
+    public void saveTestcaseResult(Testcase tc) {
+        String url = automationDbConnString;
+        String timestamp = new Timestamp(System.currentTimeMillis()).toString();
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(SAVE_TESTCASE_RESULT_QUERY)) {
+            pstmt.setString(1, tc.getExecutionGuid());
+            pstmt.setString(2, tc.getTestcaseName());
+            pstmt.setString(3, tc.getTestcaseDescription());
+            pstmt.setString(4, tc.getStatus());
+            pstmt.setString(5, tc.getMessage());
+            pstmt.setString(6, timestamp);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

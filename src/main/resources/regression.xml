@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Smoke">
+    <listeners>
+        <listener class-name="Listeners.XmlSuiteListener" />
+    </listeners>
+    <test verbose="2" name="E:/prjcts/miveko/SinDevTasks/Paysera/SeleniumWithTestNG/target">
+    <groups>
+        <run>
+            <include name="Regression"/>
+        </run>
+    </groups>
+        <classes>
+        <class name="Test.CurrencyConversionCalculatorTests"/>
+        </classes>
+    </test>
+</suite>

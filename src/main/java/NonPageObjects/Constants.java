@@ -11,5 +11,8 @@ public class Constants {
      public static final String SKIP = "skip";
      public static final String SMOKE = "Smoke";
      public static final String REGRESSION = "Regression";
+     public static final String GET_TESTCASES_QUERY = "SELECT x.* FROM @TestcaseGroup@_testcase_dataset x;";
 
+     public static final String SAVE_TESTCASE_RESULT_QUERY = "INSERT INTO testcase_result (execution_guid, " +
+             "testcase_name, testcase_description, status, message, timestamp) VALUES(?, ?, ?, ?, ?, ?);";
 }

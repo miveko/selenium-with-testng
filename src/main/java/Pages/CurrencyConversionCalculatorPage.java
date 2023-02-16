@@ -57,4 +57,10 @@ public class CurrencyConversionCalculatorPage {
         input_sellAmount().clear();
         input_sellAmount().sendKeys("5");
     }
+
+    public void selectCountry(String country) {
+        _span_carret().click();
+        _dropdown_countries().click();
+        _link_country(country);
+    }
 }

@@ -15,7 +15,7 @@ public class Testcase {
         testcaseDescription = "";
         status = NOT_EXECUTED;
         message = "";
-        //TODO initialize the executionGuidField;
+        executionGuid = String.valueOf(BaseTest.executionGuid);
     }
 
     public String getTestcaseName() {

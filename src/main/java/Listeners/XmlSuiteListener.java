@@ -14,15 +14,6 @@ public class XmlSuiteListener implements ISuiteListener {
     public void onStart(ISuite suite) {
         // When <suite> tag starts
         System.out.println("onStart: before suite starts");
-        try (InputStream input = new FileInputStream("./resources/config.properties")) {
-            Properties prop = new Properties();
-            // load a properties file
-            prop.load(input);
-            // get the property value and print it out
-            BaseTest.setAutomationDbConnString(prop.getProperty("auto_db_conn_string"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override
