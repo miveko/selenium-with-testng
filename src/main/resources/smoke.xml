@@ -2,13 +2,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Smoke">
     <test verbose="2" name="CurrencyConversionCalculatorMainTest">
-    <groups>
-        <run>
-            <include name="Smoke"/>
-        </run>
-    </groups>
+        <groups>
+            <run>
+                <include name="Smoke"/>
+            </run>
+        </groups>
         <classes>
-        <class name="Test.CurrencyConversionCalculatorTests"/>
+            <class name="Test.CurrencyConversionCalculatorTests"/>
         </classes>
     </test>
 </suite>

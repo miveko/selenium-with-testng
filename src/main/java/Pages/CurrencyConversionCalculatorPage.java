@@ -1,7 +1,13 @@
 package Pages;
+import NonPageObjects.RatesCompare;
 import PageElements.CurrencyConversionCalculatorElements;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import static NonPageObjects.Constants.PAGE_LOAD_WAIT_TIME;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+
+import static NonPageObjects.Constants.DEFAULT_IMPLICIT_WAIT_OF_SECONDS;
 import static PageElements.CurrencyConversionCalculatorElements.*;
 
 public class CurrencyConversionCalculatorPage {
@@ -14,12 +20,8 @@ public class CurrencyConversionCalculatorPage {
     }
 
     public void loadPage() {
-        driver.manage().timeouts().implicitlyWait(PAGE_LOAD_WAIT_TIME);
+        driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_OF_SECONDS);
         driver.get("https://www.paysera.lt/v2/en-LT/fees/currency-conversion-calculator");
-    }
-
-    public String searchText() {
-        return search_button().getAttribute("value");
     }
 
     public void clearSellAmount() {
@@ -61,6 +63,44 @@ public class CurrencyConversionCalculatorPage {
     public void selectCountry(String country) {
         _span_carret().click();
         _dropdown_countries().click();
-        _link_country(country);
+        _link_country(country).click();
+    }
+
+    //TODO: TO BE OPTIMIZED
+    public RatesCompare extractRatesComparisons(WebElement row) {
+        RatesCompare ratesCompare = new RatesCompare();
+        List<WebElement> tds = row.findElements(By.tagName("td"));
+        for(int i = 0; i < tds.size(); i++) {
+            switch (i) {
+                case 0:
+                    ratesCompare.setCurrency(tds.get(i).getText());
+                    break;
+                case 3:
+                    try {
+                        WebElement spanPayseraAmount = tds.get(i).findElement(By.cssSelector("span[class='ng-binding']"));
+                        ratesCompare.setPayseraAmount(spanPayseraAmount.getText());
+                    } catch (Exception e) {
+                        ratesCompare.setPayseraAmount("");
+                    }
+                    break;
+                default:
+                    if(i > 3) {
+                        try {
+                            WebElement spanOtherBankAmount = tds.get(i).findElement(By.cssSelector("span[class='ng-binding']"));
+                            ratesCompare.getBankAmount().add(spanOtherBankAmount.getText());
+                        } catch (Exception e) {
+                            ratesCompare.getBankAmount().add("");
+                        }
+                        try {
+                            WebElement spanOtherBankNeg = tds.get(i).findElement(By.cssSelector("span[class='other-bank-loss ng-binding ng-scope']"));
+                            ratesCompare.getNegativeDiff().add(spanOtherBankNeg.getText());
+                        } catch (Exception e) {
+                            ratesCompare.getNegativeDiff().add("");
+                        }
+                    }
+                    break;
+            }
+        }
+        return ratesCompare;
     }
 }

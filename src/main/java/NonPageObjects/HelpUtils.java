@@ -18,11 +18,11 @@ public class HelpUtils extends BaseTest {
             tc.setStatus(SKIPPED);
         } else {
             tc.setStatus(FAILED);
-            Assert.assertEquals(msg, OK);
         }
 
         tc.setMessage(msg);
         saveTestcaseResult(tc);
+        Assert.assertEquals(msg, OK);
     }
 
 

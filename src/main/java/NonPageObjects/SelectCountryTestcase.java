@@ -19,7 +19,6 @@ public class SelectCountryTestcase {
     }
 
     public static Object[][] map (List<HashMap<String, Object>> rows) {
-//        SelectCountryTestcase[] tcList = new SelectCountryTestcase[rows.size()];
         Object[][] tcList = new Object[rows.size()][];
         try {
             int i = 0;
