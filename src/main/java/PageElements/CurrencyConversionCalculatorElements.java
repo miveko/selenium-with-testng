@@ -38,7 +38,7 @@ public class CurrencyConversionCalculatorElements {
     public static WebElement _span_currencySelected() {
         return driver.findElement(By.cssSelector("span[data-ng-bind='$select.selected'][class='ng-binding ng-scope']"));
     }
-    
+
     public static List<WebElement> _currenciesInRatesToList() {
         return driver.findElements(By.cssSelector("td[data-ng-if='currencyExchangeVM.rates[currencyExchangeVM.PROVIDERS.OFFICIAL]']"));
     }

@@ -124,7 +124,7 @@ public class CurrencyConversionCalculatorTests extends BaseTest {
     }
 
     //TODO: DEBUG WHY ONLY THE LAST TESTCASE ENTITY IS PASSED BY THE DATAPROVIDER
-    @Test (groups= {SMOKE,REGRESSION}, dataProvider = "SelectCountryTestcases")
+    @Test (groups= {SMOKE,REGRESSION}, dataProvider = "SelectCountryTestcases", priority = 5)
     public void selectCountryFromFooter(String testcase_name, String testcase_description,
                                         String testcase_type, String testcase_country, String testcase_currency) {
         try {
@@ -156,7 +156,7 @@ public class CurrencyConversionCalculatorTests extends BaseTest {
         }
     }
 
-    @Test(groups = {SMOKE, REGRESSION}, priority = 5)
+    @Test(groups = {SMOKE, REGRESSION}, priority = 6)
     public void checkNegativeBankVsPayseraAmounts() {
         try {
             testcase = new Testcase("CheckNegativeBankVsPayseraAmounts");
