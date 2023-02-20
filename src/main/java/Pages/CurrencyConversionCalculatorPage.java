@@ -66,7 +66,6 @@ public class CurrencyConversionCalculatorPage {
         _link_country(country).click();
     }
 
-    //TODO: TO BE OPTIMIZED
     public RatesCompare extractRatesComparisons(WebElement row) {
         RatesCompare ratesCompare = new RatesCompare();
         List<WebElement> tds = row.findElements(By.tagName("td"));
@@ -77,25 +76,40 @@ public class CurrencyConversionCalculatorPage {
                     break;
                 case 3:
                     try {
-                        WebElement spanPayseraAmount = tds.get(i).findElement(By.cssSelector("span[class='ng-binding']"));
-                        ratesCompare.setPayseraAmount(spanPayseraAmount.getText());
+                        if(tds.get(i).getText().contains("-")) {
+                            ratesCompare.setPayseraAmount("");
+                        } else {
+                            WebElement spanPayseraAmount = tds.get(i).findElement(By.cssSelector("span[class='ng-binding']"));
+                            ratesCompare.setPayseraAmount(spanPayseraAmount.getText());
+                        }
                     } catch (Exception e) {
                         ratesCompare.setPayseraAmount("");
+                        System.err.println("Unable to extract Paysera rate/amount");
                     }
                     break;
                 default:
-                    if(i > 3) {
+                    if(i > 3 && ratesCompare.getPayseraAmount().length() > 1) {
                         try {
-                            WebElement spanOtherBankAmount = tds.get(i).findElement(By.cssSelector("span[class='ng-binding']"));
-                            ratesCompare.getBankAmount().add(spanOtherBankAmount.getText());
+                            if(tds.get(i).getText().contains("-")) {
+                                ratesCompare.getBankAmount().add("");
+                            } else {
+                                WebElement spanOtherBankAmount = tds.get(i).findElement(By.cssSelector("span[class='ng-binding']"));
+                                ratesCompare.getBankAmount().add(spanOtherBankAmount.getText());
+                            }
                         } catch (Exception e) {
                             ratesCompare.getBankAmount().add("");
+                            System.err.println("Unable to extract Bank amount");
                         }
                         try {
-                            WebElement spanOtherBankNeg = tds.get(i).findElement(By.cssSelector("span[class='other-bank-loss ng-binding ng-scope']"));
-                            ratesCompare.getNegativeDiff().add(spanOtherBankNeg.getText());
+                            if(tds.get(i).getText().contains("-")) {
+                                ratesCompare.getNegativeDiff().add("");
+                            } else {
+                                WebElement spanOtherBankNeg = tds.get(i).findElement(By.cssSelector("span[class='other-bank-loss ng-binding ng-scope']"));
+                                ratesCompare.getNegativeDiff().add(spanOtherBankNeg.getText());
+                            }
                         } catch (Exception e) {
                             ratesCompare.getNegativeDiff().add("");
+                            System.err.println("Unable to extract Bank negative difference");
                         }
                     }
                     break;
