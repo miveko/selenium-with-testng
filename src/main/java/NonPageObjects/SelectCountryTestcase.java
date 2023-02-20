@@ -1,7 +1,6 @@
 package NonPageObjects;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class SelectCountryTestcase {
     private final String testcaseName;
@@ -17,9 +16,8 @@ public class SelectCountryTestcase {
         country = String.valueOf(singleTc[3]);
         currency = String.valueOf(singleTc[4]);
     }
-
-    public static Object[][] map (List<HashMap<String, Object>> rows) {
-        Object[][] tcList = new Object[rows.size()][];
+    public static List<SelectCountryTestcase> map (List<HashMap<String, Object>> rows) {
+        List<SelectCountryTestcase> tcList = new ArrayList<>();
         try {
             int i = 0;
             for(HashMap<String, Object> row : rows) {
@@ -29,7 +27,7 @@ public class SelectCountryTestcase {
                 singleTc[2] = row.get("testcase_type").toString();
                 singleTc[3] = row.get("country").toString();
                 singleTc[4] = row.get("currency").toString();
-                tcList[i] = singleTc;
+                tcList.add(new SelectCountryTestcase(singleTc));
             }
         } catch(Exception e) {
             System.err.println(e.getMessage());

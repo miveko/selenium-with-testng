@@ -12,9 +12,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static NonPageObjects.Constants.*;
@@ -42,14 +41,20 @@ public class CurrencyConversionCalculatorTests extends BaseTest {
     }
 
     @DataProvider(name = "SelectCountryTestcases")
-    public Object[][] dpMethod(){
+    public Iterator<Object[]> dpMethod(){
         String sqlQuery = GET_TESTCASES_QUERY.replace("@TestcaseGroup@", "select_country");
         List<HashMap<String, Object>> resultSet = pTcUtil.getSqlData(sqlQuery);
         if(testType.equals(SMOKE))
             resultSet = resultSet.stream()
                     .filter(c -> c.get("testcase_type").equals(SMOKE))
                     .collect(Collectors.toList());
-        return SelectCountryTestcase.map(resultSet);
+
+        List<SelectCountryTestcase> list =  SelectCountryTestcase.map(resultSet);
+        Collection<Object []> filteredTestcases = new ArrayList<>();
+        for(SelectCountryTestcase eachTestInput : list) {
+            filteredTestcases.add(new Object[] {eachTestInput});
+        }
+        return  filteredTestcases.iterator();
     }
 
     @AfterClass(alwaysRun = true)
@@ -123,26 +128,25 @@ public class CurrencyConversionCalculatorTests extends BaseTest {
         }
     }
 
-    //TODO: DEBUG WHY ONLY THE LAST TESTCASE ENTITY IS PASSED BY THE DATAPROVIDER
     @Test (groups= {SMOKE,REGRESSION}, dataProvider = "SelectCountryTestcases", priority = 5)
-    public void selectCountryFromFooter(String testcase_name, String testcase_description,
-                                        String testcase_type, String testcase_country, String testcase_currency) {
+    public void selectCountryFromFooter(SelectCountryTestcase[] testc) {
         try {
-            testcase = new Testcase(testcase_name);
-            testcase.setTestcaseDescription(testcase_description);
+            SelectCountryTestcase tc = testc[0];
+            testcase = new Testcase(tc.getTestcaseName());
+            testcase.setTestcaseDescription(tc.getTestcaseDescription());
             driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_OF_SECONDS);
-            page.selectCountry(testcase_country);
+            page.selectCountry(tc.getCountry());
             String currency = _span_currencySelected().getText();
             while (currency == null || currency.length() == 0) {
                 driver.manage().timeouts().implicitlyWait(DEFAULT_IMPLICIT_WAIT_OF_SECONDS);
                 currency = _span_currencySelected().getText();
             }
 
-            Assert.assertEquals(currency, testcase_currency);
+            Assert.assertEquals(currency, tc.getCurrency());
 
             boolean persistsIn_ConvertTo_ListOfCurrencies = false;
             for(WebElement webElement : _currenciesInRatesToList()) {
-                if(webElement.getText().trim().startsWith(testcase_currency)) {
+                if(webElement.getText().trim().startsWith(tc.getCurrency())) {
                     persistsIn_ConvertTo_ListOfCurrencies = true;
                     break;
                 }
