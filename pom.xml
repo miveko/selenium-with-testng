@@ -52,7 +52,8 @@
                 <version>2.18.1</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>smoke.xml</suiteXmlFile>
+                        <suiteXmlFile>regression.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
